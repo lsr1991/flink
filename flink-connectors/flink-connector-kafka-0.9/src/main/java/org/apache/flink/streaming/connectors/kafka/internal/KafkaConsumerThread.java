@@ -446,8 +446,9 @@ public class KafkaConsumerThread extends Thread {
 				} else if (newPartitionState.getOffset() == KafkaTopicPartitionStateSentinel.GROUP_OFFSET) {
 					// the KafkaConsumer by default will automatically seek the consumer position
 					// to the committed group offset, so we do not need to do it.
-
 					newPartitionState.setOffset(consumerTmp.position(newPartitionState.getKafkaPartitionHandle()) - 1);
+					log.info(String.format("start consuming topic partition %s:%d from offset %d",
+						newPartitionState.getTopic(), newPartitionState.getPartition(), newPartitionState.getOffset()));
 				} else {
 					consumerTmp.seek(newPartitionState.getKafkaPartitionHandle(), newPartitionState.getOffset() + 1);
 				}
